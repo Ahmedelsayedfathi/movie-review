@@ -1,0 +1,133 @@
+﻿@model IMDB.ViewModels.Director_Movie
+@using IMDB.Models
+
+
+@{
+    ViewData["Title"] = "Director Details";
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Portfolio website</title>
+    <link rel="stylesheet" type="text/css" href="~/Content/ActorStyle.css">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+
+<body>
+    <header>
+
+        @Html.ActionLink("IMDb", "Home", new { controller = "Home" }, new { @class = "logo" })
+
+        <ul class="navbar">
+
+            <li>
+                @Html.ActionLink("Home", "Home", new { controller = "Home" }, new { @class = "home_active" })
+            </li>
+
+            <li>@Html.ActionLink("Search", "Searching", new { controller = "Search" })</li>
+
+        </ul>
+        @Html.ActionLink("Sign In", "Login", new { controller = "User" }, new { @class = "btn" })
+
+    </header>
+
+    <section class="about">
+        <div class="main">
+            @if (Model.Director.DirectorIMG != null)
+            {
+                <img style="width:200px;height:100%;border-radius:7.2%" src="@String.Format("data:image/png;base64,{0}", Convert.ToBase64String(Model.Director.DirectorIMG))" alt="@Model.Director.FirstName @Model.Director.LastName">
+            }
+            else
+            {
+                <img style="width:200px;height:100%;border-radius:7.2%" src="~/Image/DefaultProfile.jpg" . alt="@Model.Director.FirstName @Model.Director.LastName" />
+            }
+            <div class="about-text">
+                <h2>@Html.DisplayFor(model => model.Director.FirstName) @Html.DisplayFor(model => model.Director.LastName)</h2>
+                <h5>Actor <span>& Director</span></h5>
+                <p>@Html.DisplayFor(model => model.Director.Description)</p>
+                <form class="rating">
+                    <label>
+                        <input type="radio" name="stars" value="1" />
+                        <span class="icon">★</span>
+                    </label>
+                    <label>
+                        <input type="radio" name="stars" value="2" />
+                        <span class="icon">★</span>
+                        <span class="icon">★</span>
+                    </label>
+                    <label>
+                        <input type="radio" name="stars" value="3" />
+                        <span class="icon">★</span>
+                        <span class="icon">★</span>
+                        <span class="icon">★</span>
+                    </label>
+                    <label>
+                        <input type="radio" name="stars" value="4" />
+                        <span class="icon">★</span>
+                        <span class="icon">★</span>
+                        <span class="icon">★</span>
+                        <span class="icon">★</span>
+                    </label>
+                    <label>
+                        <input type="radio" name="stars" value="5" />
+                        <span class="icon">★</span>
+                        <span class="icon">★</span>
+                        <span class="icon">★</span>
+                        <span class="icon">★</span>
+                        <span class="icon">★</span>
+                    </label>
+                </form>
+            </div>
+        </div>
+    </section>
+
+
+    <div class="service">
+        <div class="title">
+            <h2>Movies</h2>
+        </div>
+        <div class="box">
+            @foreach (var item in Model.Movies)
+            {
+                <div class="card">
+                    <div class="content">
+                        <a href="" target="_blank">
+
+                            @if (item.MovieIMG != null)
+                            {
+                                <img src="@String.Format("data:image/png;base64,{0}", Convert.ToBase64String(item.MovieIMG))" alt="@item.MovieName" id="movieImage" />
+                            }
+                            else
+                            {
+                                <img src="~/Image/MovieImages/MovieDefault.jpg" alt="@item.MovieName" />
+                            }
+
+                            <div class="content-overlay"></div>
+                            <div class="content-details fadeIn-bottom">
+                                <h3 class="content-title">Go to movie</h3>
+                                <p class="content-text"> @Html.DisplayFor(model => item.Description)</p>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+
+
+
+
+    <!------footer start--------->
+    <footer>
+        <div class="social">
+            <a href="#"><i class="fab fa-facebook-f"></i></a>
+            <a href="#"><i class="fab fa-instagram"></i></a>
+            <a href="#"><i class="fab fa-dribbble"></i></a>
+        </div>
+
+    </footer>
+</body>
+</html>
+

@@ -1,0 +1,166 @@
+﻿@model IMDB.ViewModels.MovieProfileViewModel
+@{
+    ViewData["Title"] = "Movie Details";
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Movie Profile</title>
+    <link rel="stylesheet" type="text/css" href="~/Content/ActorStyle.css">
+    <link href="~/Content/MovieProfile.css" rel="stylesheet" />
+    <link href="~/Content/Comment.css" rel="stylesheet" />
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+
+<body>
+    <header>
+
+        @Html.ActionLink("IMDb", "Home", new { controller = "Home" }, new { @class = "logo" })
+
+        <ul class="navbar">
+
+            <li>
+                @Html.ActionLink("Home", "Home", new { controller = "Home" }, new { @class = "home_active" })
+            </li>
+
+            <li>@Html.ActionLink("Search", "Searching", new { controller = "Search" })</li>
+
+        </ul>
+        @if (Model.UserName != " ")
+        {
+            <span style="padding:8px">@Html.DisplayFor(model => model.UserName)</span>
+        }
+        else
+        {
+            @Html.ActionLink("Sign In", "Login", new { controller = "User" }, new { @class = "btn" })
+        }
+
+    </header>
+
+    <section class="about">
+        <div>
+            <div class="main">
+                @if (Model.Movie.MovieIMG != null)
+                {
+                    <img src="@String.Format("data:image/png;base64,{0}", Convert.ToBase64String(Model.Movie.MovieIMG))" alt="@Model.Movie.MovieName" id="movieImage" />
+                }
+                else
+                {
+                    <img src="~/Image/MovieImages/MovieDefault.jpg" alt="@Model.Movie.MovieName" />
+                }
+
+                <div class="about-text">
+                    <h2>@Html.DisplayFor(model => model.Movie.MovieName)</h2>
+                    <hr />
+                    <p>@Html.DisplayFor(model => model.Movie.Description)</p>
+
+                    <h4>Actors</h4>
+                    <hr />
+                    <div class="text-line">
+                        @foreach (var item in Model.MovieActor)
+                        {
+
+                            @Html.ActionLink(item.Actor.FirstName + " " + item.Actor.LastName, "ActorProfile", new { id = item.ActorID }, new { @class = "text-info" })
+                            <span>, </span>
+
+                        }
+                    </div>
+                    <br />
+                    <br />
+                    <h4>Director</h4>
+                    <hr />
+                    <div class="text-line">
+                        @if (Model.Director == null)
+                        {
+                            <span>Null</span>
+                        }
+                        else
+                        {
+                            @Html.ActionLink(Model.Director.FirstName + " " + Model.Director.LastName, "DirectorProfile", new { id = Model.Director.DirectorID }, new { @class = "text-info" })
+                        }
+                    </div>
+                </div>
+            </div>
+            @using (Html.BeginForm("MovieProfile", "View", FormMethod.Post, new { enctype = "multipart/form-data" }))
+            {
+                @Html.AntiForgeryToken()
+                <div class="Likes">
+                    @if ( Model.UserName != " " )
+                    {
+                    <button class=" like" value="1" name="liked"></button>
+                    <button class=" dislike" value="0" name="liked"></button>
+                    }
+                    <span style="position:absolute;margin-top:20px;margin-left:30px;">
+                        @Html.DisplayFor(model => model.Counter)
+                        Likes
+                    </span>
+                </div>
+            }
+        </div>
+    </section>
+
+
+    <section class="content-item" id="comments">
+        <div class="container">
+            <br />
+            <div class="row">
+                <div class="col-sm-8">
+                    <div class="comment">
+                        @using (Html.BeginForm("MovieProfile", "View", FormMethod.Post, new { enctype = "multipart/form-data" }))
+                        {
+                            @Html.AntiForgeryToken()
+                            if (Model.UserName != " ")
+                            {
+                            <h3 class="pull-left">New Comment</h3>
+
+                                <fieldset>
+                                    <div class="row">
+                                        <div class="form-group col-xs-12 col-sm-9 col-lg-10">
+                                            @Html.TextAreaFor(model => model.Comment.Content)
+                                        </div>
+                                    </div>
+                                </fieldset>
+                                <input type="submit" value="Submit" class="btn btn-normal pull-right" style="cursor:pointer;">
+                                <br />
+                            }
+                                <div class="media">
+                                    @foreach (var item in Model.Comments)
+                                    {
+                                        if (item.User.ProfileIMG != null)
+                                        {
+                                            <img class="media-object" src="@String.Format("data:image/png;base64,{0}", Convert.ToBase64String(item.User.ProfileIMG))" alt="@item.User.FirstName @item.User.LastName" />
+                                        }
+                                        else
+                                        {
+                                            <img class="media-object" src="~/Image/DefaultProfile.jpg" alt="@item.User.FirstName @item.User.LastName" />
+                                        }
+                                        <div class="media-body">
+
+                                            <h4 class="media-heading">@Html.DisplayFor(model => item.User.FirstName) @Html.DisplayFor(model => item.User.LastName)</h4>
+                                            <p style="margin-left:3%;">@Html.DisplayFor(model => item.Content)</p>
+                                        </div>
+                                        <br />
+                                    }
+                                </div>
+                            }
+                        </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+
+
+
+    <footer>
+        <div class="social">
+
+        </div>
+
+    </footer>
+</body>
+</html>

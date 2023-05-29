@@ -1,0 +1,71 @@
+﻿@model IMDB.Models.Director
+
+@{
+
+    ViewBag.Title = "Create New Director";
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <link href="~/Content/CreationForm.css" rel="stylesheet" />
+
+</head>
+<body>
+    <div class="IMDB-image">
+        <a href="@Url.Action("Home", "Home")">
+            <img src="~/Image/IMDb Image.png" alt="IMDb logo" />
+        </a>
+    </div>
+    <div class="creation-form">
+        <h1 class="Header">Create New Director</h1>
+
+
+        @using (Html.BeginForm("NewDirector", "Admin", FormMethod.Post, new { enctype = "multipart/form-data" }))
+        {
+            @Html.AntiForgeryToken()
+
+            <div class="text-line">
+                @Html.LabelFor(text => text.FirstName)
+                @Html.TextBoxFor(name => name.FirstName, new { @class = "input" })
+                @Html.ValidationMessageFor(name => name.FirstName, "", new { @class = "ErrorMSG" })
+            </div>
+
+            <div class="text-line">
+                @Html.LabelFor(text => text.LastName)
+                @Html.TextBoxFor(name => name.LastName, new { @class = "input" })
+                @Html.ValidationMessageFor(name => name.LastName, "", new { @class = "ErrorMSG" })
+            </div>
+
+            <div class="text-line">
+                @Html.LabelFor(text => text.Description)
+                @Html.TextAreaFor(name => name.Description, new { @class = "input" })
+            </div>
+
+            <div class="text-line">
+                @Html.LabelFor(text => text.Age)
+                @Html.TextBoxFor(name => name.Age, new { @class = "input" })
+                @Html.ValidationMessageFor(name => name.Age, "", new { @class = "ErrorMSG" })
+            </div>
+
+            <div class="text-line">
+                @Html.LabelFor(text => text.DirectorIMG)
+                <input type="file" name="directorImage" class="file-upload-field" />
+            </div>
+
+            <div class="text-line">
+                <h4 style="color:green;">@TempData["Message"]</h4>
+                <input type="submit" value="Create" class="button" />
+                @Html.ActionLink("Back", "DirectorList", "Profile", new { @class = "Linkbutton" }, new { id = "BackBtn" })
+            </div>
+
+
+        }
+    </div>
+
+
+
+
+</body>
+</html>

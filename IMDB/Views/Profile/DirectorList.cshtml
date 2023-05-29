@@ -1,0 +1,77 @@
+﻿@model IEnumerable<IMDB.Models.Director>
+@{
+    ViewData["Title"] = "List of Directors";
+
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, intial-scale = 1.0" />
+    <title>Directors</title>
+    <link rel="stylesheet" href="~/Content/ActorListStyle.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css" />
+</head>
+
+<body>
+    <header>
+        @Html.ActionLink("IMDb", "Home", new { controller = "Home" }, new { @class = "logo" })
+        <ul class="navbar">
+            <li>@Html.ActionLink("Home", "Home", new { controller = "Home" }, new { @class = "home_active" })</li>
+            <li>@Html.ActionLink("Movies", "Movie")</li>
+            <li>@Html.ActionLink("Actors", "ActorList")</li>
+            <li>@Html.ActionLink("Directors", "DirectorList")</li>
+            <li>@Html.ActionLink("Search", "Searching", new { controller = "Search" })</li>
+            <li>@Html.ActionLink("Create", "NewDirector", new { controller = "Admin" })</li>
+
+        </ul>
+
+        @Html.ActionLink("Sign In", "Login", new { controller = "User" }, new { @class = "btn" })
+    </header>
+    <div class="row">
+        <div class="container">
+
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>@Html.DisplayNameFor(model => model.FirstName)</th>
+                        <th>@Html.DisplayNameFor(model => model.LastName)</th>
+                        <th>@Html.DisplayNameFor(model => model.Age)</th>
+
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td class="align-middle">
+                                @Html.DisplayFor(modelItem => item.FirstName)
+                            </td>
+                            <td class="align-middle">
+                                @Html.DisplayFor(modelItem => item.LastName)
+                            </td>
+                            <td class="align-middle">
+                                @Html.DisplayFor(modelItem => item.Age)
+                            </td>
+
+                            <td class="align-middle">
+                                @Html.ActionLink("Edit", "DirectorsEdit", new { controller = "Admin", id = item.DirectorID })
+                                @Html.ActionLink("Delete", "DeleteDriector", new { controller = "Admin", id = item.DirectorID })
+                                @Html.ActionLink("view", "DirectorProfile", new { controller = "View", id = item.DirectorID })
+
+                            </td>
+                        </tr>
+
+                    }
+                </tbody>
+
+            </table>
+
+        </div>
+    </div>
+</body>
+</html>
+

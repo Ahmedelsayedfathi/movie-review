@@ -1,0 +1,75 @@
+﻿@model IEnumerable<IMDB.Models.Movie>
+@{
+    ViewData["Title"] = "List of Movies";
+
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, intial-scale = 1.0" />
+    <title>Actors</title>
+    <link rel="stylesheet" href="~/Content/ActorListStyle.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css" />
+</head>
+
+<body>
+
+    <header>
+        @Html.ActionLink("IMDb", "Home", new { controller = "Home" }, new { @class = "logo" })
+        <ul class="navbar">
+            <li>@Html.ActionLink("Home", "Home", new { controller = "Home" }, new { @class = "home_active" })</li>
+            <li>@Html.ActionLink("Movies", "Movie")</li>
+            <li>@Html.ActionLink("Actors", "ActorList")</li>
+            <li>@Html.ActionLink("Directors", "DirectorList")</li>
+            <li>@Html.ActionLink("Search", "Searching", new { controller = "Search" })</li>
+            <li>@Html.ActionLink("Create", "NewMovie", new { controller = "Admin" })</li>
+
+        </ul>
+
+        @Html.ActionLink("Sign In", "Login", new { controller = "User" }, new { @class = "btn" })
+    </header>
+
+    <div class="row">
+        <div class="container">
+
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>@Html.DisplayNameFor(model => model.MovieName)</th>
+                  
+                        <th>@Html.DisplayNameFor(model => model.Director.FirstName)</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td class="align-middle">
+                                @Html.DisplayFor(modelItem => item.MovieName)
+                            </td>
+
+                            <td class="align-middle">
+                                @Html.DisplayFor(modelItem => item.Director.FirstName)  @Html.DisplayFor(modelItem => item.Director.LastName)
+                            </td>
+
+                            <td class="align-middle">
+                                @Html.ActionLink("Edit", "MovieEdit", new { controller = "Admin", id = item.MovieID })
+                                @Html.ActionLink("Delete", "DeleteMovie", new { controller = "Admin", id = item.MovieID })
+                                @Html.ActionLink("View", "MovieProfile", new { controller = "View", id = item.MovieID })
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+
+            </table>
+
+        </div>
+    </div>
+</body>
+</html>
+
+
